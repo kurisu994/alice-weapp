@@ -1,5 +1,5 @@
 import Taro, { Component, Config } from '@tarojs/taro';
-import { View, Button, Text } from '@tarojs/components';
+import { View, Button, Text, Form, Input } from '@tarojs/components';
 import { observer, inject } from '@tarojs/mobx';
 
 import './index.less';
@@ -43,29 +43,23 @@ class Index extends Component<Props, any> {
 
   componentDidHide () { }
 
-  increment = () => {
-    const { CounterStore } = this.injected;
-    CounterStore.increment()
+  formSubmit = e => {
+    console.log(e)
   }
 
-  decrement = () => {
-    const { CounterStore } = this.injected
-    CounterStore.decrement()
-  }
-
-  incrementAsync = () => {
-    const { CounterStore } = this.injected
-    CounterStore.incrementAsync()
+  formReset = e => {
+    console.log(e)
   }
 
   render () {
-    const { CounterStore: { counter } } = this.injected
     return (
       <View className='index'>
-        <Button onClick={this.increment}>+</Button>
-        <Button onClick={this.decrement}>-</Button>
-        <Button onClick={this.incrementAsync}>Add Async</Button>
-        <Text>{counter}</Text>
+        <Form onSubmit={this.formSubmit} onReset={this.formReset} >
+          <View className='form-body'>
+            <Input name='userName' className='form-input'>用户名</Input>
+            <Input name='password' className='form-input' password>用户名</Input>
+          </View>
+        </Form>
       </View>
     )
   }

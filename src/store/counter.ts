@@ -1,29 +1,13 @@
 import { action, observable, } from "mobx";
+import Taro from '@tarojs/taro'
 
 export class CounterStore {
   @observable
   public counter: number = 0;
 
-  @action
-  public counterStore = () => {
-    this.counter++;
-  };
-
-  @action
-  public increment = () => {
-    this.counter++;
-  };
-
-  @action
-  public decrement = () => {
-    this.counter--;
-  };
-
-  @action
-  public incrementAsync = async (): Promise<any> => {
-    setTimeout(() => {
-      this.counter++;
-    }, 1000);
+  public increment = async (): Promise<any> => {
+    const _auth = await Taro.login();
+    console.log(_auth);
   };
 }
 

@@ -72,7 +72,7 @@ export namespace Action {
   /**
    * Action类型
    */
-  export interface Type<P = any, T = any> extends ReduxAction<string> {
+  export interface Type<P = any, T = any> extends ReduxAction {
     data: P | T;
   }
 

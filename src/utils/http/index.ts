@@ -32,6 +32,7 @@ async function _fetch(options: http.FetchConfig): Promise<any> {
     let response: http.Promised,
       _res: http.ParseResult<any>;
     try {
+      //@ts-ignore
       response = await Taro.request(options);
       _res = parseResponse(response);
 
