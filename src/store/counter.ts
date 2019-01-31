@@ -1,20 +1,30 @@
-import { observable } from 'mobx'
+import { action, observable, } from "mobx";
 
-const counterStore = observable({
-  counter: 0,
-  counterStore() {
-    this.counter++
-  },
-  increment() {
-    this.counter++
-  },
-  decrement() {
-    this.counter--
-  },
-  incrementAsync() {
+export class CounterStore {
+  @observable
+  public counter: number = 0;
+
+  @action
+  public counterStore = () => {
+    this.counter++;
+  };
+
+  @action
+  public increment = () => {
+    this.counter++;
+  };
+
+  @action
+  public decrement = () => {
+    this.counter--;
+  };
+
+  @action
+  public incrementAsync = async (): Promise<any> => {
     setTimeout(() => {
-      this.counter++
-    }, 1000)
-  }
-})
-export default counterStore
+      this.counter++;
+    }, 1000);
+  };
+}
+
+export default new CounterStore();

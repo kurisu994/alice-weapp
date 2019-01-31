@@ -1,27 +1,23 @@
-import { ComponentType } from 'react'
-import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Button, Text } from '@tarojs/components'
-import { observer, inject } from '@tarojs/mobx'
+import Taro, { Component, Config } from '@tarojs/taro';
+import { View, Button, Text } from '@tarojs/components';
+import { observer, inject } from '@tarojs/mobx';
 
-import './index.less'
+import './index.less';
+import { CounterStore } from 'src/store/counter';
 
-type PageStateProps = {
-  counterStore: {
-    counter: number,
-    increment: Function,
-    decrement: Function,
-    incrementAsync: Function
-  }
+interface Props {
 }
 
-interface Index {
-  props: PageStateProps;
+interface InjectedProps extends Props, NavigationPreloadManager {
+  CounterStore: CounterStore
 }
 
-@inject('counterStore')
+@inject('CounterStore')
 @observer
-class Index extends Component {
-
+class Index extends Component<Props, any> {
+  get injected() {
+    return this.props as InjectedProps;
+  }
   /**
    * 指定config的类型声明为: Taro.Config
    *
@@ -48,22 +44,22 @@ class Index extends Component {
   componentDidHide () { }
 
   increment = () => {
-    const { counterStore } = this.props
-    counterStore.increment()
+    const { CounterStore } = this.injected;
+    CounterStore.increment()
   }
 
   decrement = () => {
-    const { counterStore } = this.props
-    counterStore.decrement()
+    const { CounterStore } = this.injected
+    CounterStore.decrement()
   }
 
   incrementAsync = () => {
-    const { counterStore } = this.props
-    counterStore.incrementAsync()
+    const { CounterStore } = this.injected
+    CounterStore.incrementAsync()
   }
 
   render () {
-    const { counterStore: { counter } } = this.props
+    const { CounterStore: { counter } } = this.injected
     return (
       <View className='index'>
         <Button onClick={this.increment}>+</Button>
@@ -75,4 +71,4 @@ class Index extends Component {
   }
 }
 
-export default Index  as ComponentType
+export default Index;

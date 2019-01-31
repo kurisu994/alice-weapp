@@ -2,7 +2,7 @@
   "miniprogramRoot": "./dist",
   "projectname": "uw",
   "description": "没有介绍",
-  "appid": "touristappid",
+  "appid": "wxa93fc55a9b660043",
   "setting": {
     "urlCheck": true,
     "es6": false,
