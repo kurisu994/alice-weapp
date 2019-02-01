@@ -45,6 +45,7 @@ class HomePage extends Component<Props, any> {
 
   public _click = () => {
    console.log("点了一下")
+   
   }
 
   render () {

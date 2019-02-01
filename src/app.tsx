@@ -3,6 +3,7 @@ import { Provider } from '@tarojs/mobx'
 import '@tarojs/async-await'
 import * as store from '../src/store';
 import { View } from '@tarojs/components';
+import { getCurrentPage, GlobalEvent } from './utils';
 
 // 如果需要在 h5 环境中开启 React Devtools
 // 取消以下注释：
@@ -27,11 +28,62 @@ class App extends Component {
       backgroundTextStyle: 'light',
       navigationBarBackgroundColor: '#fff',
       navigationBarTitleText: 'WeChat',
-      navigationBarTextStyle: 'black'
+      navigationBarTextStyle: 'black',
+      backgroundColor: '#ebebeb'
+    },
+    tabBar: {
+      color: '#999999',
+      selectedColor: '#333333',
+      backgroundColor: '#fcfcfc',
+      borderStyle: 'white',
+      position: 'bottom',
+      list: [
+        {
+          text: '首页',
+          pagePath: 'pages/index/index',
+          iconPath: 'assets/images/01.png',
+          selectedIconPath: 'assets/images/01_HL.png'
+        },
+        {
+          text: '我的',
+          pagePath: 'pages/index/index',
+          iconPath: 'assets/images/02.png',
+          selectedIconPath: 'assets/images/02_HL.png'
+        }
+      ]
     }
   }
 
+  static stacks: Array<String> = [];
+
+  handleUpdate() {
+    // 更新新版本
+    const updateManager = Taro.getUpdateManager();
+    updateManager.onCheckForUpdate(function () {
+      // 请求完新版本信息的回调
+    });
+    updateManager.onUpdateReady(function () {
+      // 新的版本已经下载好，调用 applyUpdate 应用新版本并重启
+      updateManager.applyUpdate();
+    });
+    updateManager.onUpdateFailed(function () {
+      // 新版本下载失败
+    });
+  }
+
   componentDidMount () {}
+
+  componentWillMount() {
+    this.handleUpdate();
+    // 请求失败事件
+    Taro.eventCenter.on(GlobalEvent.REQUEST_FAIL, error => {
+      if (error instanceof Error) {
+        Taro.showToast({ title: error.message || '获取失败', icon: 'none' });
+      }
+    });
+    // Token失效事件
+    Taro.eventCenter.on(GlobalEvent.TOKEN_INVALID, this.handleTokenInvalid);
+  }
 
   componentDidShow () {}
 
@@ -39,6 +91,20 @@ class App extends Component {
 
   componentDidCatchError () {}
 
+  public handleTokenInvalid = async () => {
+    if (App.stacks.length > 0) {
+      return;
+    }
+    const route = getCurrentPage().route;
+    const page = 'pages/getUserInfo/index';
+    if (route.indexOf(page) >= 0) {
+      return;
+    }
+    App.stacks.push(page);
+    const url = `/${page}?returnURL=${route}`;
+    await Taro.navigateTo({ url });
+    App.stacks.pop();
+  };
   // 在 App 类中的 render() 函数没有实际作用
   // 请勿修改此函数
   render () {

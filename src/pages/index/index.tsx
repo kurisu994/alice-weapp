@@ -26,7 +26,28 @@ class Index extends Component<Props, any> {
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
   config: Config = {
-    navigationBarTitleText: '登录'
+    navigationBarTitleText: '登录',
+    tabBar: {
+      color: '#999999',
+      selectedColor: '#333333',
+      backgroundColor: '#fcfcfc',
+      borderStyle: 'white',
+      position: 'bottom',
+      list: [
+        {
+          pagePath: 'pages/index/index',
+          text: '首页',
+          iconPath: 'assets/images/tabbar_newcar.png',
+          selectedIconPath: 'assets/images/tabbar_newcar_HL.png'
+        },
+        {
+          pagePath: 'pages/index/index',
+          text: '我的',
+          iconPath: 'assets/images/tabbar_profile.png',
+          selectedIconPath: 'assets/images/tabbar_profile_HL.png'
+        }
+      ]
+    }
   }
 
   componentWillMount () { }
