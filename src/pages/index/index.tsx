@@ -1,5 +1,5 @@
 import Taro, { Component, Config } from '@tarojs/taro';
-import { View, Button, Text, Form, Input } from '@tarojs/components';
+import { View, Button, Form, Input } from '@tarojs/components';
 import { observer, inject } from '@tarojs/mobx';
 
 import './index.less';
@@ -27,68 +27,47 @@ class Index extends Component<Props, any> {
    */
   config: Config = {
     navigationBarTitleText: '登录',
-    tabBar: {
-      color: '#999999',
-      selectedColor: '#333333',
-      backgroundColor: '#fcfcfc',
-      borderStyle: 'white',
-      position: 'bottom',
-      list: [
-        {
-          pagePath: 'pages/index/index',
-          text: '首页',
-          iconPath: 'assets/images/tabbar_newcar.png',
-          selectedIconPath: 'assets/images/tabbar_newcar_HL.png'
-        },
-        {
-          pagePath: 'pages/index/index',
-          text: '我的',
-          iconPath: 'assets/images/tabbar_profile.png',
-          selectedIconPath: 'assets/images/tabbar_profile_HL.png'
-        }
-      ]
-    }
-  }
+  };
 
-  componentWillMount () { }
+  componentWillMount () {}
 
   componentWillReact () {
   }
 
   componentDidMount () { 
-    // Taro.getStorage({ key: 'token' }).then((d) => {
-    //     const token = d.data;
-    //     if (!!token) {
-    //       Taro.redirectTo({
-    //         url: '/pages/homePage/index'
-    //       });
-    //     }
-    // });
+    Taro.getStorage({ key: 'token' }).then((d) => {
+        const token = d.data;
+        if (!!token) {
+          Taro.redirectTo({
+            url: '/pages/homePage/index'
+          });
+        }
+    });
   }
 
-  componentWillUnmount () { }
+  componentWillUnmount () {}
 
-  componentDidShow () { }
+  componentDidShow () {}
 
-  componentDidHide () { }
+  componentDidHide () {}
 
   public _wxLogin = () => {
     const { LoginStore } = this.injected;
     Taro.login().then((data) => {
       LoginStore.authentication(data.code, this.loginedcb);
     });
-  }
+  };
 
   public _qqLogin = () => {
     Taro.showToast({ title: '开发中...', icon: 'none',  });
-  }
+  };
 
   public loginedcb = (data: string) => {
     Taro.setStorage({ key: "token", data });
     Taro.redirectTo({
       url: '/pages/homePage/index'
     });
-  }
+  };
 
   public submitLogin = (e) => {
     const { LoginStore } = this.injected;

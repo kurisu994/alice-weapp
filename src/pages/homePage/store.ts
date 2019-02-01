@@ -1,20 +1,21 @@
 import { action, observable, } from "mobx";
 import * as api from './api';
+import Taro from "@tarojs/taro";
 
-export class CounterStore {
+export class AccountStore {
   @observable
-  public counter: number = 0;
+  public accountList: Account.Account[] = [];
 
   @action
-  public authentication = async (code: string, succes: Function): Promise<any> => {
+  public getList = async (): Promise<any> => {
     try {
-      const res = await api.auth(code);
-      res.data;
-      succes&&succes();
+      const res = await api.list();
+      this.accountList = res.data;
     } catch (e) {
-      
+      console.log(e.message);
+      Taro.showToast({ title: `查询失败：${e.message}`, icon: 'none' });
     }
   };
 }
 
-export default new CounterStore();
+export default new AccountStore();

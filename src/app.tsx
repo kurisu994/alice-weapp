@@ -3,13 +3,8 @@ import { Provider } from '@tarojs/mobx'
 import '@tarojs/async-await'
 import * as store from '../src/store';
 import { View } from '@tarojs/components';
-import { getCurrentPage, GlobalEvent } from './utils';
+import { getCurrentPage } from './utils';
 
-// 如果需要在 h5 环境中开启 React Devtools
-// 取消以下注释：
-// if (process.env.NODE_ENV !== 'production' && process.env.TARO_ENV === 'h5')  {
-//   require('nerv-devtools')
-// }
 
 class App extends Component {
   /**
@@ -52,7 +47,7 @@ class App extends Component {
         }
       ]
     }
-  }
+  };
 
   static stacks: Array<String> = [];
 
@@ -75,14 +70,6 @@ class App extends Component {
 
   componentWillMount() {
     this.handleUpdate();
-    // 请求失败事件
-    Taro.eventCenter.on(GlobalEvent.REQUEST_FAIL, error => {
-      if (error instanceof Error) {
-        Taro.showToast({ title: error.message || '获取失败', icon: 'none' });
-      }
-    });
-    // Token失效事件
-    Taro.eventCenter.on(GlobalEvent.TOKEN_INVALID, this.handleTokenInvalid);
   }
 
   componentDidShow () {}

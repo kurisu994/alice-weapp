@@ -4,6 +4,6 @@ import request from '../../utils/http/index_';
 
 type P<T> = Promise<request.ParseResult<T>>;
 
-export function auth(code: string): P<string> {
-  return http.get(`${host.base}/wx/auth/authentication`, { params: { code } });
+export function list(): P<Array<Account.Account>> {
+  return http.get(`${host.base}/account/list`);
 }
