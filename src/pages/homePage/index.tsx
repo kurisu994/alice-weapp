@@ -1,5 +1,5 @@
 import Taro, { Component, Config } from '@tarojs/taro';
-import { View, Button, Text, Form, Input } from '@tarojs/components';
+import { View, Button, Text } from '@tarojs/components';
 import { observer, inject } from '@tarojs/mobx';
 
 import './index.less';
@@ -26,7 +26,7 @@ class HomePage extends Component<Props, any> {
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
   config: Config = {
-    navigationBarTitleText: '首页'
+    navigationBarTitleText: '主页'
   }
 
   componentWillMount () { }

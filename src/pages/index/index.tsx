@@ -3,16 +3,16 @@ import { View, Button, Text, Form, Input } from '@tarojs/components';
 import { observer, inject } from '@tarojs/mobx';
 
 import './index.less';
-import { CounterStore } from './store';
+import { LoginStore } from './store';
 
 interface Props {
 }
 
 interface InjectedProps extends Props, NavigationPreloadManager {
-  CounterStore: CounterStore
+  LoginStore: LoginStore
 }
 
-@inject('CounterStore')
+@inject('LoginStore')
 @observer
 class Index extends Component<Props, any> {
   get injected() {
@@ -26,16 +26,24 @@ class Index extends Component<Props, any> {
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
   config: Config = {
-    navigationBarTitleText: '首页'
+    navigationBarTitleText: '登录'
   }
 
   componentWillMount () { }
 
   componentWillReact () {
-    console.log('componentWillReact')
   }
 
-  componentDidMount () { }
+  componentDidMount () { 
+    // Taro.getStorage({ key: 'token' }).then((d) => {
+    //     const token = d.data;
+    //     if (!!token) {
+    //       Taro.redirectTo({
+    //         url: '/pages/homePage/index'
+    //       });
+    //     }
+    // });
+  }
 
   componentWillUnmount () { }
 
@@ -43,25 +51,59 @@ class Index extends Component<Props, any> {
 
   componentDidHide () { }
 
-  public _click = () => {
-    const { CounterStore } = this.injected;
+  public _wxLogin = () => {
+    const { LoginStore } = this.injected;
     Taro.login().then((data) => {
-      CounterStore.authentication(data.code, (data: string) => {
-        Taro.setStorage({ key: "token", data });
-        Taro.redirectTo({
-          url: 'pages/homePage/index'
-        });
-      });
-    }).catch(e => {
-      console.log(e.message)
+      LoginStore.authentication(data.code, this.loginedcb);
     });
   }
 
+  public _qqLogin = () => {
+    Taro.showToast({ title: '开发中...', icon: 'none',  });
+  }
+
+  public loginedcb = (data: string) => {
+    Taro.setStorage({ key: "token", data });
+    Taro.redirectTo({
+      url: '/pages/homePage/index'
+    });
+  }
+
+  public submitLogin = (e) => {
+    const { LoginStore } = this.injected;
+    const { changeParam, login } = LoginStore;
+    changeParam(e.detail.value);
+    login(this.loginedcb);
+  };
+
   render () {
+    const { LoginStore } = this.injected;
+    const { loginInfo } = LoginStore;
     return (
       <View className='index'>
-        <Text>登录</Text>
-        <Button onClick={this._click}>微信登录</Button>
+        <Form className="formContainer"
+          onSubmit={this.submitLogin}>
+          <Input
+            name="userName"
+            value={loginInfo.userName}
+            className="inputItem"
+            type='text'
+            placeholder='请输入帐号'
+          />
+          <Input
+            name="password"
+            value={loginInfo.password}
+            className="inputItem"
+            type='text'
+            password
+            placeholder='请输入密码'
+          />
+          <Button className="button" type='primary' formType="submit" sendMessageTitle=''>登录</Button>
+        </Form>
+        <View style={{ display: 'flex',flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',marginTop: 20 }}>
+          <Button size="mini" style={{ borderColor: '#FFF' }} className="btn" plain={true} onClick={this._wxLogin}>使用微信登录</Button>
+          <Button size="mini" style={{ borderColor: '#FFF' }} className="btn" plain={true} onClick={this._qqLogin}>使用QQ登录</Button>
+        </View>
       </View>
     )
   }
