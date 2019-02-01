@@ -54,12 +54,7 @@ class Index extends Component<Props, any> {
   render () {
     return (
       <View className='index'>
-        <Form onSubmit={this.formSubmit} onReset={this.formReset} >
-          <View className='form-body'>
-            <Input name='userName' className='form-input'>用户名</Input>
-            <Input name='password' className='form-input' password>用户名</Input>
-          </View>
-        </Form>
+        hello index page.
       </View>
     )
   }

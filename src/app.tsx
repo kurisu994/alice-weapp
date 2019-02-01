@@ -1,10 +1,8 @@
 import Taro, { Component, Config } from '@tarojs/taro'
+import { View } from '@tarojs/components';
 import { Provider } from '@tarojs/mobx'
-import CounterStore from './store/counter'
-import '@tarojs/async-await';
-
-import './app.less'
-import Login from './pages/login';
+import '@tarojs/async-await'
+import * as store from '../src/store';
 
 // 如果需要在 h5 环境中开启 React Devtools
 // 取消以下注释：
@@ -12,12 +10,7 @@ import Login from './pages/login';
 //   require('nerv-devtools')
 // }
 
-const store = {
-  CounterStore
-}
-
 class App extends Component {
-
   /**
    * 指定config的类型声明为: Taro.Config
    *
@@ -51,7 +44,7 @@ class App extends Component {
   render () {
     return (
       <Provider store={store}>
-        <Login />
+        <View />
       </Provider>
     )
   }
