@@ -1,8 +1,8 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View } from '@tarojs/components';
 import { Provider } from '@tarojs/mobx'
 import '@tarojs/async-await'
 import * as store from '../src/store';
+import { View } from '@tarojs/components';
 
 // 如果需要在 h5 环境中开启 React Devtools
 // 取消以下注释：
@@ -21,7 +21,7 @@ class App extends Component {
   config: Config = {
     pages: [
       'pages/index/index',
-      'pages/login/index'
+      'pages/homePage/index',
     ],
     window: {
       backgroundTextStyle: 'light',

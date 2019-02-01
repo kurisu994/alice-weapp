@@ -14,7 +14,7 @@ interface InjectedProps extends Props, NavigationPreloadManager {
 
 @inject('CounterStore')
 @observer
-class Index extends Component<Props, any> {
+class HomePage extends Component<Props, any> {
   get injected() {
     return this.props as InjectedProps;
   }
@@ -44,27 +44,17 @@ class Index extends Component<Props, any> {
   componentDidHide () { }
 
   public _click = () => {
-    const { CounterStore } = this.injected;
-    Taro.login().then((data) => {
-      CounterStore.authentication(data.code, (data: string) => {
-        Taro.setStorage({ key: "token", data });
-        Taro.redirectTo({
-          url: 'pages/homePage/index'
-        });
-      });
-    }).catch(e => {
-      console.log(e.message)
-    });
+   console.log("点了一下")
   }
 
   render () {
     return (
       <View className='index'>
-        <Text>登录</Text>
-        <Button onClick={this._click}>微信登录</Button>
+        <Text>Hello</Text>
+        <Button onClick={this._click}>主页</Button>
       </View>
     )
   }
 }
 
-export default Index;
+export default HomePage;

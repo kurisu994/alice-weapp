@@ -1,1 +1,1 @@
-export { default as CounterStore } from './counter';
+export { default as CounterStore } from '../pages/index/store';
