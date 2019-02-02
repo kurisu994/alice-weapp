@@ -38,7 +38,7 @@ class Index extends Component<Props, any> {
     Taro.getStorage({ key: 'token' }).then((d) => {
         const token = d.data;
         if (!!token) {
-          Taro.redirectTo({
+          Taro.switchTab({
             url: '/pages/homePage/index'
           });
         }
@@ -64,7 +64,7 @@ class Index extends Component<Props, any> {
 
   public loginedcb = (data: string) => {
     Taro.setStorage({ key: "token", data });
-    Taro.redirectTo({
+    Taro.switchTab({
       url: '/pages/homePage/index'
     });
   };

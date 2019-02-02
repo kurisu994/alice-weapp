@@ -4,6 +4,7 @@ import { observer, inject } from '@tarojs/mobx';
 
 import './index.less';
 import { AccountStore } from './store';
+import { Type } from './entity';
 
 interface Props {
 }
@@ -27,14 +28,13 @@ class HomePage extends Component<Props, any> {
    */
   config: Config = {
     navigationBarTitleText: '主页',
+    enablePullDownRefresh: true
   };
 
   componentWillMount () { }
 
   componentDidMount () {
-    const { AccountStore } = this.injected;
-    const { getList } = AccountStore;
-    getList();
+    Taro.startPullDownRefresh();
   }
 
   componentWillUnmount () { }
@@ -43,6 +43,16 @@ class HomePage extends Component<Props, any> {
 
   componentDidHide () { }
 
+
+  // 下拉刷新
+  onPullDownRefresh = async () => {
+    Taro.showNavigationBarLoading();
+    const { AccountStore } = this.injected;
+    const { getList } = AccountStore;
+    await getList();
+    Taro.hideNavigationBarLoading();
+    Taro.stopPullDownRefresh();
+  };
 
   public _click = (item: Account.Account) => {
     Taro.showToast({ title: `点击${item.name}`, icon: 'none' });
@@ -62,7 +72,7 @@ class HomePage extends Component<Props, any> {
         <View style={{ flex: 1, height: '95%', display: 'flex', justifyContent: 'space-around',flexDirection: 'column' ,marginLeft: '10px', marginRight: '10px' }}>
           <View style={{ display: 'flex', justifyContent: 'space-between',flexDirection: 'row', alignItems: 'center' }}>
             <Text style={{ fontSize: '15px', marginLeft: '10px', color: '#333' }}>{item.name}</Text>
-            <Text style={{ fontSize: '12px', marginRight: '10px', color: '#999' }}>类型:{item.accountType}</Text>
+            <Text style={{ fontSize: '12px', marginRight: '10px', color: '#999' }}>类型: {Type[item.accountType]}</Text>
           </View>
           <View style={{ display: 'flex', justifyContent: 'space-between',flexDirection: 'row', alignItems: 'center' }}>
             <Text style={{ fontSize: '10px', marginLeft: '10px', color: '#999' }}>创建时间: {item.createTime}</Text>
