@@ -65,8 +65,8 @@ class HomePage extends Component<Props, any> {
             <Text style={{ fontSize: '12px', marginRight: '10px', color: '#999' }}>类型:{item.accountType}</Text>
           </View>
           <View style={{ display: 'flex', justifyContent: 'space-between',flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={{ fontSize: '10px', marginLeft: '10px', color: '#999' }}>创建时间: {new Date(item.createTime).getFullYear()}</Text>
-            <Text style={{ fontSize: '10px', marginRight: '10px', color: '#999' }}>修改时间: {new Date(item.updateTime).getFullYear()} </Text>
+            <Text style={{ fontSize: '10px', marginLeft: '10px', color: '#999' }}>创建时间: {item.createTime}</Text>
+            <Text style={{ fontSize: '10px', marginRight: '10px', color: '#999' }}>修改时间: {item.updateTime}</Text>
           </View>
         </View>
         <View style={{ marginLeft: '10px', marginRight: '10px' }}>
