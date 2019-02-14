@@ -3,7 +3,7 @@ import { Provider } from '@tarojs/mobx'
 import '@tarojs/async-await'
 import * as store from '../src/store';
 import { View } from '@tarojs/components';
-import { getCurrentPage } from './utils';
+import { GlobalEvent } from './utils';
 
 
 class App extends Component {
@@ -18,6 +18,7 @@ class App extends Component {
     pages: [
       'pages/index/index',
       'pages/homePage/index',
+      'pages/homePage/components/Detail',
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -66,12 +67,23 @@ class App extends Component {
     });
   }
 
-  componentDidMount () {}
+  componentDidMount () {
+  }
 
   componentWillMount() {
     this.handleUpdate();
+    // 请求失败事件
+    Taro.eventCenter.on(GlobalEvent.REQUEST_FAIL, error => {
+      if (error instanceof Error) {
+        Taro.showToast({ title: error.message || '获取失败', icon: 'none' });
+      }
+    });
+    // Token失效事件
+    Taro.eventCenter.on(GlobalEvent.TOKEN_INVALID, this.handleTokenInvalid);
   }
-
+  componentWillUnmount() {
+    Taro.eventCenter.off();
+  }
   componentDidShow () {}
 
   componentDidHide () {}
@@ -79,18 +91,10 @@ class App extends Component {
   componentDidCatchError () {}
 
   public handleTokenInvalid = async () => {
-    if (App.stacks.length > 0) {
-      return;
-    }
-    const route = getCurrentPage().route;
-    const page = 'pages/getUserInfo/index';
-    if (route.indexOf(page) >= 0) {
-      return;
-    }
-    App.stacks.push(page);
-    const url = `/${page}?returnURL=${route}`;
-    await Taro.navigateTo({ url });
-    App.stacks.pop();
+    console.log('token过期');
+    Taro.removeStorage({ key: "token" });
+    const url = `/pages/index/index`;
+    await Taro.reLaunch({ url });
   };
   // 在 App 类中的 render() 函数没有实际作用
   // 请勿修改此函数

@@ -5,6 +5,7 @@ import { observer, inject } from '@tarojs/mobx';
 import './index.less';
 import { AccountStore } from './store';
 import { Type } from './entity';
+import { CSSProperties } from 'react';
 
 interface Props {
 }
@@ -55,43 +56,51 @@ class HomePage extends Component<Props, any> {
   };
 
   public _click = (item: Account.Account) => {
-    Taro.showToast({ title: `点击${item.name}`, icon: 'none' });
+    const { getDetail } = this.injected.AccountStore;
+    const url = `/pages/homePage/components/Detail`;
+    getDetail(item.id).then(() => {
+      Taro.navigateTo({
+        url
+      });
+    });
   };
 
   public _add = () => {
-    Taro.showToast({ title: '点击新增按钮', icon: 'none' });
+    const url = `/pages/homePage/components/Detail`;
+    Taro.navigateTo({
+      url
+    });
   };
-
 
   render () {
     const { AccountStore } = this.injected;
     const { accountList } = AccountStore;
     const  _url = require('../../assets/images/arrow.png');
     const list = accountList.map((item) =>
-      <View onClick={() => this._click(item)} key={item.id} style={{ backgroundColor: '#ffffff', borderWidth: 'thin',border: 'solid', borderRadius: '5px',borderColor: '#EEE',margin: '8px', display: 'flex', flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', height: '120px' }}>
-        <View style={{ flex: 1, height: '95%', display: 'flex', justifyContent: 'space-around',flexDirection: 'column' ,marginLeft: '10px', marginRight: '10px' }}>
-          <View style={{ display: 'flex', justifyContent: 'space-between',flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={{ fontSize: '15px', marginLeft: '10px', color: '#333' }}>{item.name}</Text>
-            <Text style={{ fontSize: '12px', marginRight: '10px', color: '#999' }}>类型: {Type[item.accountType]}</Text>
+      <View onClick={() => this._click(item)} key={item.id} style={st.card as CSSProperties}>
+        <View style={st.warpper as CSSProperties}>
+          <View style={st.rowSt as CSSProperties}>
+            <Text style={st.titleText}>{item.name}</Text>
+            <Text style={st.typeText}>类型: {Type[item.accountType]}</Text>
           </View>
-          <View style={{ display: 'flex', justifyContent: 'space-between',flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={{ fontSize: '10px', marginLeft: '10px', color: '#999' }}>创建时间: {item.createTime}</Text>
-            <Text style={{ fontSize: '10px', marginRight: '10px', color: '#999' }}>修改时间: {item.updateTime}</Text>
+          <View style={st.rowSt as CSSProperties}>
+            <Text style={st.text}>创建时间: {item.createTime}</Text>
+            <Text style={st.text}>修改时间: {item.updateTime}</Text>
           </View>
         </View>
         <View style={{ marginLeft: '10px', marginRight: '10px' }}>
-          <Image style={{ width: '16px', height: '25px', backgroundColor: '#FFF' }} src={_url}/>
+          <Image style={st.img} src={_url}/>
         </View>
       </View>
     );
     return (
-      <View style={{ display: 'flex', justifyContent: 'flex-start', flexDirection: 'column' }}>
-        <View style={{ height: '100px', display: 'flex', justifyContent: 'space-around', flexDirection: 'column' }}>
-          <Text style={{ fontSize: '18px', marginLeft: '15px' }}>新增数据</Text>
-          <Button onClick={this._add} style={{ textAlign: 'center', verticalAlign: 'middle',lineHeight: '35px', border: 'none',height: '36px', width: '95%', margin: '5px', backgroundColor: '#7cbcff',fontSize: '18px', color: '#3a77ff'}}>新增</Button>
+      <View style={st.mainSt as CSSProperties}>
+        <View style={st.add as CSSProperties}>
+          <Text style={st.title}>新增数据</Text>
+          <Button onClick={this._add} style={st.btn as CSSProperties}>新增</Button>
         </View>
-        <View style={{ flex: 1,display: 'flex', justifyContent: 'space-around', flexDirection: 'column' }}>
-          <Text style={{ fontSize: '18px', marginLeft: '15px' }}>我的记录</Text>
+        <View style={st.view as CSSProperties}>
+          <Text style={st.title}>我的记录</Text>
           <ScrollView style={{ display: 'flex', flex: 1 }}>
             {list}
           </ScrollView>
@@ -102,3 +111,88 @@ class HomePage extends Component<Props, any> {
 }
 
 export default HomePage;
+
+const st = {
+  mainSt: { 
+    display: 'flex',
+    justifyContent: 'flex-start',
+    flexDirection: 'column'
+  },
+  add: { 
+    height: '100px',
+    display: 'flex',
+    justifyContent: 'space-around',
+    flexDirection: 'column'
+  },
+  title: { 
+    fontSize: '18px',
+    marginLeft: '15px'
+  },
+  btn: { 
+    textAlign: 'center',
+    verticalAlign: 'middle',
+    lineHeight: '35px',
+    border: 'none',
+    height: '36px',
+    width: '95%',
+    margin: '5px',
+    fontSize: '18px',
+    color: '#FFF',
+    background: '#77BEEB',
+ },
+  view: { 
+    flex: 1,
+    display: 'flex',
+    justifyContent: 'space-around',
+    flexDirection: 'column'
+  },
+  card: { 
+    backgroundColor: '#ffffff',
+    borderWidth: '0.5px',
+    border: 'solid',
+    borderRadius: '5px',
+    borderColor: '#EEE',
+    margin: '8px',
+    display: 'flex',
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    height: '120px' 
+  },
+  warpper: { 
+    flex: 1,
+    height: '95%',
+    display: 'flex',
+    justifyContent: 'space-around',
+    flexDirection: 'column',
+    marginLeft: '10px',
+    marginRight: '10px' 
+  },
+  rowSt: { 
+    display: 'flex',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  titleText: { 
+    fontSize: '15px',
+    marginLeft: '10px',
+    color: '#333'
+  },
+  typeText: { 
+    fontSize: '12px',
+    marginRight: '10px',
+    color: '#999'
+  },
+  text: { 
+    fontSize: '10px',
+    marginLeft: '10px',
+    color: '#999'
+  },
+  img: { 
+    width: '16px',
+    height: '25px',
+    backgroundColor: '#FFF'
+  },
+};

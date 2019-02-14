@@ -59,7 +59,6 @@ export function get<T>(requestURL: string, options?: http.ParamsConfig): Promise
   _options.method = "GET";
   _options.url = requestURL;
   _options.data = _options.data || _options.params;
-
   return _fetch(_options);
 }
 
@@ -104,8 +103,7 @@ function parseResponse<T>(response: http.Promised): http.ParseResult<T> {
   if (isOK && _res.success && _res.code >= 0) {
     success = true;
   }
-
-  if (status === 401) {
+  if (status === 401 || _res.code === 401) {
     Taro.eventCenter.trigger(GlobalEvent.TOKEN_INVALID);
   }
 

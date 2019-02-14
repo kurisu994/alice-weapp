@@ -1,8 +1,8 @@
 Arguments: 
-  /usr/local/bin/node /usr/local/bin/yarn add src/pages/homePage/entity --silent --no-progress
+  /usr/local/bin/node /usr/local/bin/yarn add dist/pages/homePage/entity --silent --no-progress
 
 PATH: 
-  /usr/local/lib/node_modules/npm/node_modules/npm-lifecycle/node-gyp-bin:/Volumes/Kurisu/uw/node_modules/.bin:/usr/local/lib/node_modules/npm/node_modules/npm-lifecycle/node-gyp-bin:/Volumes/Kurisu/uw/node_modules/.bin:/Users/feewee003/Documents/flutter/bin:/Users/feewee003/Desktop/Feewee003/apache-maven-3.6.0/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/feewee003/Library/Android/sdk/platform-tools
+  /usr/local/lib/node_modules/npm/node_modules/npm-lifecycle/node-gyp-bin:/Volumes/Kurisu/uw/node_modules/.bin:/usr/local/lib/node_modules/npm/node_modules/npm-lifecycle/node-gyp-bin:/Volumes/Kurisu/uw/node_modules/.bin:/Users/feewee003/Documents/flutter/bin:/Users/feewee003/Desktop/Feewee003/apache-maven-3.6.0/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/feewee003/Library/Android/sdk/platform-tools:/usr/local/mysql/bin
 
 Yarn version: 
   1.5.1
@@ -10356,7 +10356,7 @@ Lockfile:
     integrity sha1-/7wE/z1vmdrST3RjE06bkq5BvvY=
 
 Trace: 
-  Error: http://registry.npm.taobao.org/src%2fpages/homePage/entity: not_found
+  Error: http://registry.npm.taobao.org/dist%2fpages/homePage/entity: not_found
       at Request.params.callback [as _callback] (/usr/local/lib/node_modules/yarn/lib/cli.js:65019:18)
       at Request.self.callback (/usr/local/lib/node_modules/yarn/lib/cli.js:132430:22)
       at emitTwo (events.js:126:13)
