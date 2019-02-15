@@ -33,6 +33,7 @@ export class AccountStore {
       this.accountDetail = res.data;
       Taro.hideLoading()
     } catch (e) {
+      Taro.hideLoading()
       Taro.showToast({ title: `查询失败：${e.message}`, icon: 'none' });
     }
   };
