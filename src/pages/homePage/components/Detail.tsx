@@ -12,6 +12,7 @@ interface Props {
 const _showPassword = require('../../../assets/images/password-view.png');
 const _hidePassword = require('../../../assets/images/password-not-view.png');
 const _copy = require('../../../assets/images/copy.png');
+const _url = require('../../../assets/images/arrow.png');
 
 interface InjectedProps extends Props, NavigationPreloadManager {
   AccountStore: AccountStore
@@ -170,9 +171,10 @@ class HomePage extends Component<Props, any> {
           </View>
           <View style={st.rowView as CSSProperties}>
             <Text style={st.text}>类型:</Text>
-            <Picker style={st.input} mode='selector' rangeKey="label" range={this.state.selector} onChange={this.onChange}>
-              <View style={st.input} className='picker'>
-                {Type[data.accountType || 1]}
+            <Picker style={{ width: '75%', marginRight: '10px' }} mode='selector' rangeKey="label" range={this.state.selector} onChange={this.onChange}>
+              <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }} className='picker'>
+                <Text style={st.accountInput}>{Type[data.accountType || 1]}</Text>
+                <Image src={_url} style={{ width: '10px', height: '10px' }}/>
               </View>
             </Picker>
           </View>
@@ -266,8 +268,8 @@ const st = {
     lineHeight: '33px',
   },
   img: {
-    width: '22px',
-    height: '22px',
+    width: '18px',
+    height: '18px',
     marginLeft: '10px'
   }
 };

@@ -10,6 +10,8 @@ import { CSSProperties } from 'react';
 interface Props {
 }
 
+const _url = require('../../assets/images/arrow.png');
+
 interface InjectedProps extends Props, NavigationPreloadManager {
   AccountStore: AccountStore
 }
@@ -74,7 +76,6 @@ class HomePage extends Component<Props, any> {
   render () {
     const { AccountStore } = this.injected;
     const { accountList } = AccountStore;
-    const  _url = require('../../assets/images/arrow.png');
     const list = accountList.map((item) =>
       <View onClick={() => this._click(item)} key={item.id} style={st.card as CSSProperties}>
         <View style={st.warpper as CSSProperties}>
@@ -104,6 +105,9 @@ class HomePage extends Component<Props, any> {
             {list}
           </ScrollView>
         </View>
+        <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginBottom: '10px' }}>
+          <Text style={st.text1}>这里是底线了</Text>
+        </View>
       </View>
     )
   }
@@ -115,7 +119,7 @@ const st = {
   mainSt: { 
     display: 'flex',
     justifyContent: 'flex-start',
-    flexDirection: 'column'
+    flexDirection: 'column',
   },
   add: { 
     height: '100px',
@@ -137,7 +141,7 @@ const st = {
     margin: '5px',
     fontSize: '18px',
     color: '#FFF',
-    background: '#77BEEB',
+    background: '#60B8FB',
  },
   view: { 
     flex: 1,
@@ -148,7 +152,7 @@ const st = {
   card: { 
     backgroundColor: '#ffffff',
     borderWidth: '0.5px',
-    border: 'solid',
+    borderStyle: 'solid',
     borderRadius: '5px',
     borderColor: '#EEE',
     margin: '8px',
@@ -188,6 +192,10 @@ const st = {
     fontSize: '10px',
     marginLeft: '10px',
     color: '#999'
+  },
+  text1: {
+    fontSize: '14px',
+    color: '#999',
   },
   img: { 
     width: '16px',
