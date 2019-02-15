@@ -12,6 +12,7 @@ interface Props {
 const _showPassword = require('../../../assets/images/password-view.png');
 const _hidePassword = require('../../../assets/images/password-not-view.png');
 const _copy = require('../../../assets/images/copy.png');
+const _random = require('../../../assets/images/random.png');
 const _url = require('../../../assets/images/arrow.png');
 
 interface InjectedProps extends Props, NavigationPreloadManager {
@@ -38,6 +39,12 @@ class HomePage extends Component<Props, any> {
   componentWillMount() { }
 
   componentDidMount() { 
+    const { AccountStore } = this.injected;
+    const { getDetail } = AccountStore;
+    const { id } = this.$router.params;
+    if (id) {
+      getDetail(id);
+    }
   }
 
   componentWillUnmount() {
@@ -112,11 +119,23 @@ class HomePage extends Component<Props, any> {
    }
   }
 
+  public generator = async () => {
+    const { AccountStore } = this.injected;
+    const { generator } = AccountStore;
+    Taro.showLoading({
+      title: '生成密码中',
+      mask: true
+    })
+    await generator();
+    Taro.hideLoading()
+  }
+
   render() {
     const { AccountStore } = this.injected;
     const { accountDetail, loadding } = AccountStore;
     const { hidePassword } = this.state;
     const data = toJS(accountDetail);
+    const showGenerator = !data.cipherCode || !hidePassword;
     return (
       <ScrollView style={st.mainSt as CSSProperties}>
         <View style={{ height: '0.5px', backgroundColor: '#EEE' }}/>
@@ -164,6 +183,7 @@ class HomePage extends Component<Props, any> {
                 placeholder='请输入安全口令'
               />
               <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
+                {showGenerator ? <Image style={st.img} src={_random} onClick={this.generator} /> : null}
                 <Image style={st.img} src={_copy} onClick={() => this.copy(data.cipherCode)} />
                 <Image style={st.img} src={hidePassword ? _showPassword : _hidePassword} onClick={this.passwordHander} />
               </View>

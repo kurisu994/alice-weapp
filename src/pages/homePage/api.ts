@@ -17,3 +17,10 @@ export function detail(id: number): P<Account.Detail> {
 export function save(param: Account.Detail): P<any> {
   return http.post(`${host.base}/account/save`, { ...param, }, { data: undefined });
 }
+
+export function generator(): P<string> {
+  return http.get(`${host.base}/password/create`, {
+    params: { length: 12 },
+    data: undefined
+  });
+}

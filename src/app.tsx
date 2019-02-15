@@ -92,7 +92,7 @@ class App extends Component {
   componentDidCatchError () {}
 
   public handleTokenInvalid = async () => {
-    console.log('token过期');
+    Taro.showToast({ title: `登录已过期`, icon: 'none' });
     Taro.removeStorage({ key: "token" });
     const url = `/pages/index/index`;
     await Taro.reLaunch({ url });

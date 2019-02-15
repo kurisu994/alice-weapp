@@ -25,8 +25,13 @@ export class AccountStore {
   @action
   public getDetail = async (id: number): Promise<any> => {
     try {
+      Taro.showLoading({
+        title: '查询中',
+        mask: true
+      })
       const res = await api.detail(id);
       this.accountDetail = res.data;
+      Taro.hideLoading()
     } catch (e) {
       Taro.showToast({ title: `查询失败：${e.message}`, icon: 'none' });
     }
@@ -67,6 +72,21 @@ export class AccountStore {
     } catch (e) {
       this.loadding = false;
       Taro.showToast({ title: `保存失败：${e.message}`, icon: 'none' });
+    }
+  };
+
+  @action
+  public generator = async (): Promise<any> => {
+    try {
+      const res = await api.generator();
+      if (res.data) {
+        this.accountDetail = {
+          ...this.accountDetail,
+          cipherCode: res.data
+        }
+      }
+    } catch (e) {
+      Taro.showToast({ title: `查询失败：${e.message}`, icon: 'none' });
     }
   };
 
