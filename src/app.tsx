@@ -48,6 +48,12 @@ class App extends Component {
           selectedIconPath: 'assets/images/02_HL.png'
         }
       ]
+    },
+    networkTimeout: {
+      request: 10000,
+      connectSocket: 10000,
+      uploadFile: 10000,
+      downloadFile: 10000
     }
   };
 

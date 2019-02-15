@@ -41,7 +41,8 @@ async function _fetch(options: http.FetchConfig): Promise<any> {
       }
       resolve(_res);
     } catch (error) {
-      // 逻辑待定
+      const msg = error.errMsg.replace("request:fail timeout", "请求超时");
+      error.message = msg;
       reject(error);
     }
   });
