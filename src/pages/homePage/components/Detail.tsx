@@ -88,7 +88,6 @@ class HomePage extends Component<Props, any> {
     const { AccountStore } = this.injected;
     const { edit, save } = AccountStore;
     edit(e.detail.value);
-    console.log(e.detail.value)
     save(() => {
       Taro.navigateBack();
     });
@@ -120,6 +119,7 @@ class HomePage extends Component<Props, any> {
     const data = toJS(accountDetail);
     return (
       <ScrollView style={st.mainSt as CSSProperties}>
+        <View style={{ height: '0.5px', backgroundColor: '#EEE' }}/>
         <Form className="formContainer"
           onSubmit={this.submit}>
           <View style={st.rowView as CSSProperties}>
@@ -174,7 +174,7 @@ class HomePage extends Component<Props, any> {
             <Picker style={{ width: '75%', marginRight: '10px' }} mode='selector' rangeKey="label" range={this.state.selector} onChange={this.onChange}>
               <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }} className='picker'>
                 <Text style={st.accountInput}>{Type[data.accountType || 1]}</Text>
-                <Image src={_url} style={{ width: '10px', height: '10px' }}/>
+                <Image src={_url} style={{ width: '16px', height: '16px' }}/>
               </View>
             </Picker>
           </View>

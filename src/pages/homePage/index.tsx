@@ -52,9 +52,14 @@ class HomePage extends Component<Props, any> {
     Taro.showNavigationBarLoading();
     const { AccountStore } = this.injected;
     const { getList } = AccountStore;
+    Taro.showLoading({
+      title: '加载中',
+      mask: true
+    })
     await getList();
     Taro.hideNavigationBarLoading();
     Taro.stopPullDownRefresh();
+    Taro.hideLoading()
   };
 
   public _click = (item: Account.Account) => {
@@ -88,13 +93,14 @@ class HomePage extends Component<Props, any> {
             <Text style={st.text}>修改时间: {item.updateTime}</Text>
           </View>
         </View>
-        <View style={{ marginLeft: '10px', marginRight: '10px' }}>
+        <View style={{ marginRight: '5px' }}>
           <Image style={st.img} src={_url}/>
         </View>
       </View>
     );
     return (
       <View style={st.mainSt as CSSProperties}>
+        <View style={{ height: '0.5px', backgroundColor: '#EEE' }} />
         <View style={st.add as CSSProperties}>
           <Text style={st.title}>新增数据</Text>
           <Button onClick={this._add} style={st.btn as CSSProperties}>新增</Button>
@@ -198,8 +204,8 @@ const st = {
     color: '#999',
   },
   img: { 
-    width: '16px',
-    height: '25px',
+    width: '24px',
+    height: '24px',
     backgroundColor: '#FFF'
   },
 };
