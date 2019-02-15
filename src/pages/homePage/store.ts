@@ -9,6 +9,9 @@ export class AccountStore {
   //@ts-ignore
   public accountDetail: Account.Detail = {};
 
+  @observable
+  public loadding: boolean = false;
+
   @action
   public getList = async (): Promise<any> => {
     try {
@@ -30,10 +33,47 @@ export class AccountStore {
   };
 
   @action
+  public edit = (param: { }): void => {
+    this.accountDetail = {
+      ...this.accountDetail,
+      ...param
+    }
+  }
+
+  @action
   public reset = (): void => {
     //@ts-ignore
     this.accountDetail = {};
+    this.loadding = false;
   };
+
+  @action
+  public save = async (sucss?: Function): Promise<any> => {
+    try {
+      this.loadding = true;
+      const param = this.accountDetail;
+      param.accountType = this.accountDetail.accountType || 1;
+      console.log(param)
+      const vaild = this.vaildData();
+      if (vaild) {
+        this.loadding = false;
+        Taro.showToast({ title: `请输入完整信息`, icon: 'none' });
+        return;
+      }
+      await api.save(param);
+      await this.getList();
+      this.loadding = false;
+      sucss && sucss();
+    } catch (e) {
+      this.loadding = false;
+      Taro.showToast({ title: `保存失败：${e.message}`, icon: 'none' });
+    }
+  };
+
+  private vaildData = (): boolean => {
+    const { account, cipherCode, name, accountType } = this.accountDetail;
+    return !account || !cipherCode || !name || !accountType;
+  }
 }
 
 export default new AccountStore();

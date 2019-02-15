@@ -58,10 +58,9 @@ class HomePage extends Component<Props, any> {
   public _click = (item: Account.Account) => {
     const { getDetail } = this.injected.AccountStore;
     const url = `/pages/homePage/components/Detail`;
-    getDetail(item.id).then(() => {
-      Taro.navigateTo({
-        url
-      });
+    getDetail(item.id);
+    Taro.navigateTo({
+      url
     });
   };
 

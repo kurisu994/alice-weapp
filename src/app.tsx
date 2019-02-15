@@ -19,6 +19,7 @@ class App extends Component {
       'pages/index/index',
       'pages/homePage/index',
       'pages/homePage/components/Detail',
+      'pages/profile/index',
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -42,7 +43,7 @@ class App extends Component {
         },
         {
           text: '我的',
-          pagePath: 'pages/homePage/index',
+          pagePath: 'pages/profile/index',
           iconPath: 'assets/images/02.png',
           selectedIconPath: 'assets/images/02_HL.png'
         }

@@ -14,3 +14,6 @@ export function detail(id: number): P<Account.Detail> {
      data: undefined
   });
 }
+export function save(param: Account.Detail): P<any> {
+  return http.post(`${host.base}/account/save`, { ...param, }, { data: undefined });
+}

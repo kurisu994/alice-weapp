@@ -1,5 +1,5 @@
 import Taro, { Component, Config } from '@tarojs/taro';
-import { View, Button, Form, Input, Text, ScrollView, Picker } from '@tarojs/components';
+import { View, Button, Form, Input, Text, ScrollView, Picker, Image } from '@tarojs/components';
 import { observer, inject } from '@tarojs/mobx';
 import { AccountStore } from '../store';
 import { CSSProperties } from 'react';
@@ -8,6 +8,10 @@ import { Type } from '../entity';
 
 interface Props {
 }
+
+const _showPassword = require('../../../assets/images/password-view.png');
+const _hidePassword = require('../../../assets/images/password-not-view.png');
+const _copy = require('../../../assets/images/copy.png');
 
 interface InjectedProps extends Props, NavigationPreloadManager {
   AccountStore: AccountStore
@@ -79,57 +83,94 @@ class HomePage extends Component<Props, any> {
     ]
   }
 
-  public submitLogin = () => {
-
-  }
+  public submit = (e) => {
+    const { AccountStore } = this.injected;
+    const { edit, save } = AccountStore;
+    edit(e.detail.value);
+    console.log(e.detail.value)
+    save(() => {
+      Taro.navigateBack();
+    });
+  };
 
   public onChange = (e) => {
-    console.log(e.detail)
+    const { AccountStore } = this.injected;
+    const { edit } = AccountStore;
+    edit({ accountType: e.detail.value });
+  }
+
+  public passwordHander = () => {
+    let show = this.state.hidePassword;
+    this.setState({ hidePassword: !show });
+  }
+
+  public copy = (data: string) => {
+   if (data) {
+     Taro.setClipboardData({ data }).then(() => {
+       Taro.showToast({ title: `已复制^_^!`, icon: 'none' });
+     });
+   }
   }
 
   render() {
     const { AccountStore } = this.injected;
-    const { accountDetail } = AccountStore;
+    const { accountDetail, loadding } = AccountStore;
+    const { hidePassword } = this.state;
     const data = toJS(accountDetail);
     return (
       <ScrollView style={st.mainSt as CSSProperties}>
         <Form className="formContainer"
-          onSubmit={this.submitLogin}>
+          onSubmit={this.submit}>
           <View style={st.rowView as CSSProperties}>
             <Text style={st.text}>名称:</Text>
             <Input
               name="name"
               style={st.input}
+              placeholderStyle="font-size:12px;margin-left:10px;color:#858585"
               value={data.name}
               className="inputItem"
               type='text'
+              confirmType="next"
               placeholder='请输入记录名称'
             />
           </View>
           <View style={st.rowView as CSSProperties}>
             <Text style={st.text}>账号:</Text>
-            <Input
-              style={st.input}
-              name="account"
-              value={data.account}
-              type='text'
-              placeholder='请输入记录账号'
-            />
+            <View style={st.pass as CSSProperties}>
+              <Input
+                style={st.accountInput}
+                placeholderStyle="font-size:12px;margin-left:10px;color:#858585"
+                name="account"
+                value={data.account}
+                confirmType="next"
+                type='text'
+                placeholder='请输入记录账号'
+              />
+              <Image style={st.img} src={_copy} onClick={() => this.copy(data.account)} />
+            </View>
           </View>
           <View style={st.rowView as CSSProperties}>
             <Text style={st.text}>口令:</Text>
-            <Input
-              style={st.input}
-              name="cipherCode"
-              value={data.cipherCode}
-              type='text'
-              password={this.state.hidePassword}
-              placeholder='请输入安全口令'
-            />
+            <View style={st.pass as CSSProperties}>
+              <Input
+                style={st.password}
+                placeholderStyle="font-size:12px;margin-left:10px;color:#858585"
+                name="cipherCode"
+                value={data.cipherCode}
+                type='text'
+                password={hidePassword}
+                confirmType="next"
+                placeholder='请输入安全口令'
+              />
+              <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
+                <Image style={st.img} src={_copy} onClick={() => this.copy(data.cipherCode)} />
+                <Image style={st.img} src={hidePassword ? _showPassword : _hidePassword} onClick={this.passwordHander} />
+              </View>
+            </View>
           </View>
           <View style={st.rowView as CSSProperties}>
             <Text style={st.text}>类型:</Text>
-            <Picker mode='selector' rangeKey="label" range={this.state.selector} onChange={this.onChange}>
+            <Picker style={st.input} mode='selector' rangeKey="label" range={this.state.selector} onChange={this.onChange}>
               <View style={st.input} className='picker'>
                 {Type[data.accountType || 1]}
               </View>
@@ -139,9 +180,11 @@ class HomePage extends Component<Props, any> {
             <Text style={st.text}>备注:</Text>
             <Input
               style={st.input}
+              placeholderStyle="font-size:12px;margin-left:10px;color:#858585"
               name="remark"
               value={data.remark}
-              type='text'
+              confirmType="done"
+              type="text"
               placeholder='请输入备注'
             />
           </View>
@@ -149,7 +192,6 @@ class HomePage extends Component<Props, any> {
             <Text style={st.text}>创建时间:</Text>
             <Input
               style={st.input}
-              name="createTime"
               value={data.createTime}
               type='text'
               disabled
@@ -159,13 +201,12 @@ class HomePage extends Component<Props, any> {
             <Text style={st.text}>最后修改时间:</Text>
             <Input
               style={st.input}
-              name="updateTime"
               value={data.updateTime}
               type='text'
               disabled
             />
           </View>
-          <Button className="button" type='primary' formType="submit" sendMessageTitle=''>保存</Button>
+          <Button disabled={loadding} loading={loadding} style={st.btn as CSSProperties}  type='primary' formType="submit" sendMessageTitle='点击保存'>保存</Button>
         </Form>
       </ScrollView>
     )
@@ -185,7 +226,7 @@ const st = {
     justifyContent: 'space-between',
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: '5px'
+    marginTop: '15px',
   },
   text: {
     fontSize: '12px',
@@ -198,4 +239,35 @@ const st = {
     color: '#333',
     width: '75%'
   },
+  accountInput: {
+    fontSize: '15px',
+    color: '#333',
+    flex: 1
+  },
+  pass: { 
+    width: '75%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginRight: '10px',
+  },
+  password: {
+    fontSize: '15px',
+    color: '#333',
+    flex: 1
+  },
+  btn: {
+    marginTop: '15px',
+    width: '40%',
+    height: '33px',
+    backgroundColor: '#80A7F0',
+    textAlign: 'center',
+    verticalAlign: 'middle',
+    lineHeight: '33px',
+  },
+  img: {
+    width: '22px',
+    height: '22px',
+    marginLeft: '10px'
+  }
 };
