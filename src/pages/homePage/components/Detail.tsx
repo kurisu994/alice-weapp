@@ -191,7 +191,7 @@ class HomePage extends Component<Props, any> {
           </View>
           <View style={st.rowView as CSSProperties}>
             <Text style={st.text}>类型:</Text>
-            <Picker style={{ width: '75%', marginRight: '10px' }} mode='selector' rangeKey="label" range={this.state.selector} onChange={this.onChange}>
+            <Picker style={{ width: '75%', marginRight: '10px' }} value={0} mode='selector' rangeKey="label" range={this.state.selector} onChange={this.onChange}>
               <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }} className='picker'>
                 <Text style={st.accountInput}>{Type[data.accountType || 1]}</Text>
                 <Image src={_url} style={{ width: '16px', height: '16px' }}/>
