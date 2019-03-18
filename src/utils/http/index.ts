@@ -14,7 +14,7 @@ const defaultOption: http.FetchConfig = {
   responseType: "text",
   timeout: 10 * 1000,
   auth: true,
-  params: {}
+  params: undefined
 };
 
 async function _fetch(options: http.FetchConfig): Promise<any> {

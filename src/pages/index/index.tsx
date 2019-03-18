@@ -100,7 +100,7 @@ class Index extends Component<Props, any> {
           />
           <Button className="button" type='primary' formType="submit" sendMessageTitle=''>登录</Button>
         </Form>
-        <View style={{ display: 'flex',flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',marginTop: 20 }}>
+        <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: '20px', marginBottom: '20px' }}>
           <Button size="mini" style={{ borderColor: '#FFF' }} className="btn" plain={true} onClick={this._wxLogin}>使用微信登录</Button>
           <Button size="mini" style={{ borderColor: '#FFF' }} className="btn" plain={true} onClick={this._qqLogin}>使用QQ登录</Button>
         </View>
