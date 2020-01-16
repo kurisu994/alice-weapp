@@ -35,14 +35,19 @@ class Index extends Component<Props, any> {
   }
 
   componentDidMount () { 
-    Taro.getStorage({ key: 'token' }).then((d) => {
-        const token = d.data;
-        if (!!token) {
-          Taro.switchTab({
-            url: '/pages/homePage/index'
-          });
+    Taro.getStorage({
+      key: 'token',
+      success: (res) => {
+        if (res && res.data) {
+          Taro.switchTab({ url: '/pages/homePage/index' });
+        } else {
+          this.handleTokenInvalid();
         }
-    });
+      },
+      fail: () => {
+        this.handleTokenInvalid();
+      }
+   })
   }
 
   componentWillUnmount () {}
@@ -50,6 +55,13 @@ class Index extends Component<Props, any> {
   componentDidShow () {}
 
   componentDidHide () {}
+
+  public handleTokenInvalid = async () => {
+    Taro.showToast({ title: `登录已过期`, icon: 'none' });
+    Taro.removeStorageSync('token');
+    const url = `/pages/index/index`;
+    await Taro.reLaunch({ url });
+  };
 
   public _wxLogin = () => {
     const { LoginStore } = this.injected;
