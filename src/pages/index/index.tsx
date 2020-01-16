@@ -54,7 +54,13 @@ class Index extends Component<Props, any> {
   public _wxLogin = () => {
     const { LoginStore } = this.injected;
     Taro.login().then((data) => {
-      LoginStore.authentication(data.code, this.loginedcb);
+      if (data.code) {
+        LoginStore.authentication(data.code, this.loginedcb);
+        return;
+      }
+      this.Taost(`错误:授权码获取失败`);
+    }).catch(e => {
+      this.Taost(`错误:${e.message}`);
     });
   };
 
@@ -67,6 +73,14 @@ class Index extends Component<Props, any> {
     Taro.switchTab({
       url: '/pages/homePage/index'
     });
+  };
+
+  public Taost = (str: string) => {
+    Taro.showToast({
+      title: str,
+      icon: 'none',
+      duration: 2000
+    })
   };
 
   public submitLogin = (e) => {

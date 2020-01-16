@@ -80,7 +80,7 @@ class HomePage extends Component<Props, any> {
     const { AccountStore } = this.injected;
     const { accountList } = AccountStore;
     const list = accountList.map((item) =>
-      <View onClick={() => this._click(item)} key={item.id} style={st.card as CSSProperties}>
+      <View onClick={() => this._click(item)} key={`i${item.id}`} style={st.card as CSSProperties}>
         <View style={st.warpper as CSSProperties}>
           <View style={st.rowSt as CSSProperties}>
             <Text style={st.titleText}>{item.name}</Text>
